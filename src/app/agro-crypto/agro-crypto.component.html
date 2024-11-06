@@ -1,0 +1,65 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" href="#">AGROCRYPTO</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <button class="btn btn-outline-light me-2" (click)="goToLanding()">Cerrar Sesión</button>
+        </li>
+        <li class="nav-item">
+          <button class="btn btn-outline-light" (click)="viewTransactionHistory()">Listado de Registros</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Barra de carga -->
+<div *ngIf="loading" class="loading-overlay">
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Cargando...</span>
+  </div>
+  <p class="text-center mt-3">Gracias por cerrar sesión, redirigiendo...</p>
+</div>
+
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center full-width">
+  <div class="card shadow-lg p-5" style="width: 100%; max-width: 500px; border-radius: 10px;">
+    <h2 class="text-center mb-4">💸 Enviar Ether a través del contrato</h2>
+    <form (ngSubmit)="sendEther()" #etherForm="ngForm">
+
+      <!-- Campo Destinatario -->
+      <div class="mb-3">
+        <label for="recipient" class="form-label">📨 Destinatario (Dirección)</label>
+        <input type="text" id="recipient" class="form-control" [(ngModel)]="recipient" name="recipient"
+          placeholder="0x..." required pattern="^0x[a-fA-F0-9]{40}$" title="Introduce una dirección de Ethereum válida">
+        <div class="form-text">Introduce la dirección de Ethereum del destinatario.</div>
+      </div>
+
+      <!-- Campo Cantidad -->
+      <div class="mb-3">
+        <label for="amount" class="form-label">💰 Cantidad (ETH)</label>
+        <input type="number" id="amount" class="form-control" [(ngModel)]="amount" name="amount"
+          step="0.000000000000000001" placeholder="0.0" required min="0.000000000000000001"
+          title="Introduce una cantidad de Ether válida">
+        <div class="form-text">Cantidad de Ether a enviar (mínimo: 0.000000000000000001 ETH).</div>
+      </div>
+
+      <!-- Campo Mensaje -->
+      <div class="mb-3">
+        <label for="message" class="form-label">✉️ Mensaje</label>
+        <input type="text" id="message" class="form-control" [(ngModel)]="message" name="message"
+          placeholder="Mensaje opcional" required>
+        <div class="form-text">Añade un mensaje opcional para la transacción.</div>
+      </div>
+
+      <!-- Botón de Enviar -->
+      <button type="submit" class="btn btn-primary w-100" [disabled]="!etherForm.form.valid">🚀 Enviar Ether</button>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+.transactions-section {
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+  
+  .table {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  td, th {
+    vertical-align: middle !important;
+  }

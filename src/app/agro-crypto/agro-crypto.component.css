@@ -1,0 +1,65 @@
+/* agro-registry.component.scss */
+:host {
+    display: block;
+    margin: 0 auto;
+    max-width: 1200px;
+}
+
+.spinner-border {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 0.2em solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spinner-border 0.75s linear infinite;
+}
+
+@keyframes spinner-border {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+input.ng-invalid.ng-touched {
+    border-color: #ef4444;
+}
+
+.error-message {
+    color: #ef4444;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+body,
+html {
+    height: 500%;
+    margin: 0;
+    background: linear-gradient(to bottom right, #a0e9af, #58d4b1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container-fluid {
+    height: 500%;
+}
+/* Estilos para la barra de carga */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 9999;
+  }

@@ -1,0 +1,205 @@
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Estilos personalizados */
+  .container-fluid {
+    background-color: #d1e0c1;
+  }
+
+  #colorNAV {
+    background-color: rgb(105, 206, 61);
+  }
+
+  h1,
+  h2 {
+    color: black;
+  }
+
+  .btn-warning {
+    background-color: yellow;
+    color: black;
+    font-weight: bold;
+  }
+
+  .list-unstyled li {
+    margin-bottom: 10px;
+    color: black;
+  }
+
+  /* Estilo para el video de fondo */
+  .video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    /* Asegura que el video esté detrás del contenido */
+    overflow: hidden;
+  }
+
+  .video-background video {
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    object-fit: cover;
+    /* Asegura que el video cubra todo el fondo */
+  }
+
+  /* Asegura que el contenido sea visible sobre el video */
+  .content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .text-end {
+    text-align: end;
+    align-content: center;
+  }
+
+  /* Para el contenedor principal que cubre toda la pantalla */
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* Para el contenido que empuje el footer hacia abajo */
+  .main-content {
+    flex: 1;
+  }
+</style>
+
+<!-- Contenedor principal que incluye el contenido y el footer -->
+<div class="content-wrapper">
+
+  <div class="container-fluid p-3 text-light" id="colorNAV">
+    <div class="row">
+      <div class="col-md-6">
+        <h1 class="fw-bold">LOGO</h1>
+      </div>
+      <div class="col-md-6 text-end">
+        numero de cuenta de la cuenta conectada
+        <a href="/" class="text-light fw-bold">Salir de esta bonita cuenta</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Barra de navegación -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+      <a class="navbar-brand" href="#">AGROCRYPTO</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" (click)="toggleTransactions()">Home / Ver Movimientos</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="container mt-4 main-content">
+    <h1>Bienvenido a AgroCrypto</h1>
+    <p>Tu cuenta conectada es: {{ account }}</p>
+
+    <!-- Mostrar el saldo o las transacciones -->
+    <div *ngIf="!showTransactions">
+      <!-- Tabla de saldo -->
+      <div class="card">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+          <h6 class="mb-0">Cuentas - Participa incrementando tus ahorros en cualquiera de las siguientes Cuentas</h6>
+          <button class="btn btn-outline-secondary btn-sm" (click)="openModal()">Enviar plata</button>
+        </div>
+        <div class="card-body p-0">
+          <table class="table table-hover mb-0">
+            <thead>
+              <tr>
+                <th>TIPO Y NÚMERO DE CUENTA</th>
+                <th>SALDO DISPONIBLE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><a href="#">{{ account }} - CUENTA METAMASK</a></td>
+                <td>S/ {{ balance }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer text-end">
+          <strong>Saldo disponible total: S/ {{ balance }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Enviar Dinero -->
+    <div class="modal fade" id="sendMoneyModal" tabindex="-1" aria-labelledby="sendMoneyModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="sendMoneyModalLabel">Enviar Dinero</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="recipientAccount" class="form-label">Cuenta del Destinatario</label>
+              <input type="text" class="form-control" id="recipientAccount" [(ngModel)]="recipientAccount" required>
+            </div>
+            <div class="mb-3">
+              <label for="amount" class="form-label">Monto a Enviar (ETH)</label>
+              <input type="number" class="form-control" id="amount" [(ngModel)]="amount" required>
+            </div>
+            <div class="mb-3">
+              <label for="concept" class="form-label">Concepto</label>
+              <input type="text" class="form-control" id="concept" [(ngModel)]="concept" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="sendMoney()">Enviar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div *ngIf="showTransactions && account" class="card mt-4">
+    <div class="card-header">
+      <h6>Historial de Transacciones <button (click)="clearHistory()">Resetear Historial de Transacciones</button>
+      </h6>
+    </div>
+    <div class="card-body p-0">
+      <table class="table table-hover mb-0">
+        <thead>
+          <tr>
+            <th>Hash</th>
+            <th>Bloque</th>
+            <th>De</th>
+            <th>Para</th>
+            <th>Valor (ETH)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let tx of transactions | async">
+            <td class="text-center">{{tx.hash}}</td>
+            <td class="text-center">{{tx.blockNumber}}</td>
+            <td class="text-center">{{tx.from}}</td>
+            <td class="text-center">{{tx.to}}</td>
+            <td class="text-center">{{tx.value}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
